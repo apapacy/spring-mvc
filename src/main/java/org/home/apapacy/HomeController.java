@@ -4,6 +4,8 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
 import javax.annotation.Resource;
+import java.util.concurrent.Callable;
+import java.lang.Object;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +32,7 @@ public class HomeController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Locale locale, Model model) {
+	public Callable<String> home(Locale locale, Model model) {
 		logger.info("Welcome home! The client locale is {}.", locale);
 		
 		Date date = new Date();
@@ -40,13 +42,17 @@ public class HomeController {
 		
 		model.addAttribute("serverTime", formattedDate );
 		model.addAttribute("bean", this.helloBean );
-		org.home.apapacy.models.PersonModel person = new org.home.apapacy.models.PersonModel();
+		final org.home.apapacy.models.PersonModel person = new org.home.apapacy.models.PersonModel();
 		person.setName("Joe");
 		person.setCountry("usa");
 		person.setMemo("test");
-		this.persons.addPerson(person);
+		return new Callable<String>() {
+			    public String call() throws Exception {
+					persons.addPerson(person);
+					return "home";
+			    }
+			  };
 		
-		return "home";
 	}
 	
 }
