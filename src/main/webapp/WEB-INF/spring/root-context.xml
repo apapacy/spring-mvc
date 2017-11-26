@@ -14,11 +14,11 @@
 	<beans:bean id ="helloWorld" class ="org.home.apapacy.beans.HelloBean" >
 		<beans:property name ="message" value ="Hello World++!" />
 	</beans:bean>
+	
     <beans:bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close">
 		<beans:property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<beans:property name="url"
-			value="jdbc:mysql://localhost:3306/test" />
+		<beans:property name="url" value="jdbc:mysql://localhost:3306/test" />
 		<beans:property name="username" value="root" />
 		<beans:property name="password" value="password" />
 	</beans:bean>
@@ -34,21 +34,20 @@
 		</beans:property>
 		<beans:property name="hibernateProperties">
 			<beans:props>
-				<beans:prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect
-				</beans:prop>
+				<beans:prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</beans:prop>
 				<beans:prop key="hibernate.show_sql">true</beans:prop>
 			 	<beans:prop key="hibernate.hbm2ddl.auto">update</beans:prop>
 			</beans:props>
 		</beans:property>
 	</beans:bean>
 	
-	<!-- >beans:bean id="personDAO" class=".PersonDAOImpl">
+	<beans:bean id="personDAO" class="org.home.apapacy.dao.PersonDAOImpl">
 		<beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
-	</beans:bean-->
+	</beans:bean>
 	<!-- beans:bean id="personService" class="com.journaldev.spring.service.PersonServiceImpl">
 		<beans:property name="personDAO" ref="personDAO"></beans:property>
-	</beans:bean -->
-	<context:component-scan base-package="org.home.apapacy.models" />
+	</beans:bean-->
+	<!-- context:component-scan base-package="org.home.apapacy.models" /-->
 	
 	<tx:annotation-driven transaction-manager="transactionManager"/>
 	

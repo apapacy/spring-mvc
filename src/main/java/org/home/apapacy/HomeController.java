@@ -23,6 +23,9 @@ public class HomeController {
 	@Resource(name="helloWorld")
 	private org.home.apapacy.beans.HelloBean helloBean;
 	
+	@Resource(name="personDAO")
+	private org.home.apapacy.dao.PersonDAO persons;
+	
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
@@ -37,6 +40,11 @@ public class HomeController {
 		
 		model.addAttribute("serverTime", formattedDate );
 		model.addAttribute("bean", this.helloBean );
+		org.home.apapacy.models.PersonModel person = new org.home.apapacy.models.PersonModel();
+		person.setName("Joe");
+		person.setCountry("usa");
+		person.setMemo("test");
+		this.persons.addPerson(person);
 		
 		return "home";
 	}
