@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.Locale;
 import javax.annotation.Resource;
 import java.util.concurrent.Callable;
-import java.lang.Object;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

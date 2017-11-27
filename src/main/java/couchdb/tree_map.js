@@ -1,5 +1,4 @@
-//tree_map.js
-function(doc) {
+function (doc) {
   var tokens = doc.dateEffective.split("-");
   var year = null;
   var month = null;
