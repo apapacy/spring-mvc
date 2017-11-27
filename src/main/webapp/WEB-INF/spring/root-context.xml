@@ -7,12 +7,16 @@
 	xmlns:tx="http://www.springframework.org/schema/tx"
 	xmlns:util="http://www.springframework.org/schema/util"
 	xmlns:couchdb="http://www.ektorp.org/schema/couchdb"
+	xmlns:mongo="http://www.springframework.org/schema/data/mongo"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
-		http://www.ektorp.org/schema/couchdb http://www.ektorp.org/schema/couchdb/couchdb.xsd">
+		http://www.ektorp.org/schema/couchdb http://www.ektorp.org/schema/couchdb/couchdb.xsd
+		http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo-1.5.xsd">
+
+     <context:annotation-config/>
 		
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	<context:component-scan base-package="org.home.apapacy" />
@@ -51,13 +55,10 @@
 	<!-- beans:bean id="personService" class="com.journaldev.spring.service.PersonServiceImpl">
 		<beans:property name="personDAO" ref="personDAO"></beans:property>
 	</beans:bean-->
-	<context:component-scan base-package="org.home.apapacy.models" />
 	<tx:annotation-driven transaction-manager="transactionManager"/>
 	<beans:bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
 		<beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
 	</beans:bean>
-	<context:component-scan base-package="com.nu.dms.couchdb.ektorp.model"/>
-	<context:component-scan base-package="com.nu.dms.couchdb.ektorp.dao"/>
 	<util:properties id="couchdbProperties" location="/WEB-INF/couchdb.properties"/>
 	<couchdb:instance id="dmsCouchdb" url="http://localhost:5984" properties="couchdbProperties" />
 	<couchdb:database id="dmsDatabase" name="dmc4" instance-ref="dmsCouchdb" />
@@ -65,4 +66,26 @@
 	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
         <beans:property name="maxUploadSize" value="2000000"/>
 	</beans:bean>	
+
+	<context:component-scan base-package="org.home.apapacy" />
+	<context:component-scan base-package="org.home.apapacy.model" />
+	<context:component-scan base-package="org.home.apapacy.dao" />
+
+
+	<!-- Создаем бин 'mongo' -->
+	<mongo:mongo host="localhost" port="27017" id="mongo"/>
+	
+    <!--
+    Создаем бин 'mongoDbFactory'.
+    Если MongoDB не требует авторизации, то поля username, password можно убрать
+    -->
+    <mongo:db-factory
+            dbname="test"
+            mongo-ref="mongo"/>
+
+    <beans:bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+        <beans:constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>
+    </beans:bean>
+
+	
 </beans:beans>

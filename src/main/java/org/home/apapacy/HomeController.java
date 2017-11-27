@@ -29,6 +29,9 @@ public class HomeController {
 	
 	@Autowired
 	private org.home.apapacy.dao.DocumentDAO documents;
+	
+	@Autowired
+	private org.home.apapacy.dao.CustomerDAO customers;
 
 	
 	/**
@@ -80,5 +83,27 @@ public class HomeController {
 		
 	}
 
+	@RequestMapping(value = "/mongo", method = RequestMethod.GET)
+	public Callable<String> mongo(Locale locale, Model model) {
+		logger.info("Welcome home! The client locale is {}.", locale);
+		
+		Date date = new Date();
+		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
+		
+		String formattedDate = dateFormat.format(date);
+		
+		model.addAttribute("serverTime", formattedDate );
+		model.addAttribute("bean", this.helloBean );
+		final org.home.apapacy.models.CustomerModel customer = new org.home.apapacy.models.CustomerModel("m-r", "X");
+		return new Callable<String>() {
+			    public String call() throws Exception {
+					customers.save(customer);
+					return "home";
+			    }
+			  };
+		
+	}
 
+	
+	
 }
