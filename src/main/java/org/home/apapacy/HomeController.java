@@ -13,7 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
+import org.springframework.beans.factory.annotation.Autowired;
 /**
  * Handles requests for the application home page.
  */
@@ -27,6 +27,10 @@ public class HomeController {
 	
 	@Resource(name="personDAO")
 	private org.home.apapacy.dao.PersonDAO persons;
+	
+	@Autowired
+	private org.home.apapacy.dao.DocumentDAO documents;
+
 	
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -55,4 +59,27 @@ public class HomeController {
 		
 	}
 	
+	@RequestMapping(value = "/couch", method = RequestMethod.GET)
+	public Callable<String> couch(Locale locale, Model model) {
+		logger.info("Welcome home! The client locale is {}.", locale);
+		
+		Date date = new Date();
+		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
+		
+		String formattedDate = dateFormat.format(date);
+		
+		model.addAttribute("serverTime", formattedDate );
+		model.addAttribute("bean", this.helloBean );
+		final org.home.apapacy.models.Document document = new org.home.apapacy.models.Document("New Document");
+		document.setClientId(16);
+		return new Callable<String>() {
+			    public String call() throws Exception {
+					documents.add(document);
+					return "home";
+			    }
+			  };
+		
+	}
+
+
 }
