@@ -1,14 +1,19 @@
 package org.home.apapacy.models;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.annotation.PersistenceConstructor;
 
-
+@Document(collection="customer")
 public class CustomerModel {
 
     @Id
     private String id;
 
     private String firstName;
+
+	private String lastName;
+
     public String getId() {
 		return id;
 	}
@@ -33,10 +38,7 @@ public class CustomerModel {
 		this.lastName = lastName;
 	}
 
-	private String lastName;
-
-    public CustomerModel() {}
-
+    @PersistenceConstructor
     public CustomerModel(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;

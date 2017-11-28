@@ -95,12 +95,15 @@ public class HomeController {
 		model.addAttribute("serverTime", formattedDate );
 		model.addAttribute("bean", this.helloBean );
 		final org.home.apapacy.models.CustomerModel customer = new org.home.apapacy.models.CustomerModel("m-r", "X");
+		final org.home.apapacy.beans.HelloBean helloBean = this.helloBean;
+		// customer.setId("18");
 		return new Callable<String>() {
-			    public String call() throws Exception {
-					customers.save(customer);
-					return "home";
-			    }
-			  };
+		    public String call() throws Exception {
+				customers.save(customer);
+				helloBean.setMessage(customer.getId());
+				return "home";
+		    }
+		  };
 		
 	}
 

@@ -14,7 +14,7 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
 		http://www.ektorp.org/schema/couchdb http://www.ektorp.org/schema/couchdb/couchdb.xsd
-		http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo-1.5.xsd">
+		http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo-2.4.xsd">
 
      <context:annotation-config/>
 		
@@ -73,15 +73,33 @@
 
 
 	<!-- Создаем бин 'mongo' -->
-	<mongo:mongo host="localhost" port="27017" id="mongo"/>
-	
-    <!--
-    Создаем бин 'mongoDbFactory'.
+	<mongo:mongo host="127.0.0.1" port="27017" id="mongo"/>
+  
+    <mongo:client-options connections-per-host="1024"
+                   threads-allowed-to-block-for-connection-multiplier="4"
+                   connect-timeout="1000"
+                   max-wait-time="1500"
+                   auto-connect-retry="true"
+                   socket-keep-alive="true"
+                   socket-timeout="1500"
+                   slave-ok="true"
+                   write-number="1"
+                   write-timeout="0"
+                   write-fsync="true"/>
+
+
+
+
+    <!-- Создаем бин 'mongoDbFactory'.
     Если MongoDB не требует авторизации, то поля username, password можно убрать
     -->
     <mongo:db-factory
             dbname="test"
-            mongo-ref="mongo"/>
+            mongo-ref="mongo"
+            host="127.0.0.1"
+            port="27017"            
+            />
+
 
     <beans:bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
         <beans:constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>
